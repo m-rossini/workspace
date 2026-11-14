@@ -7,8 +7,8 @@ description: Use for git work — branching, worktrees, commit, push, pull reque
 
 ## Principles
 
-1. Never commit directly to the default branch (`main`, or `master` if that is what the repo uses). Do not rename an existing default branch.
-2. Work on a new branch per task. For large or parallel work, suggest a worktree and let the user choose.
+1. Never edit neither commit directly to the default branch (`main`, or `master` if that is what the repo uses). Do not rename an existing default branch.
+2. Work on a new branch per task. For large or parallel work, suggest a worktree and let the user choose. Again, never change file sin main, that is BIG RED LINE
 3. Confirm with the user before outward-facing or destructive steps: push, opening/merging a PR, deleting branches, discarding changes.
 4. Use the `gh` CLI for PRs. If it is unavailable, use the GitHub MCP tools.
 
