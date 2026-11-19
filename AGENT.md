@@ -44,3 +44,7 @@ determine when to trigger them contextually:
 - **Path:** `skills/git/`
 - **When to trigger:** Use when managing complex git operations, branch strategies, worktrees, or resolving merge states.
 - **Hub rule:** per that skill, never edit/commit directly to a default branch; confirm before push, PR merge, or destructive steps. This applies to `workspace` and every sibling.
+
+## 5. Engineering Conduct (`engineering`)
+- **Path:** `skills/engineering/`
+- **When to trigger:** Use at the start of any implementation task — before writing code — for interaction rules (ask plan-vs-implement, never invent requirements), tooling priority (SKILLs → MCPs → native → custom), and safety/honesty rules.
