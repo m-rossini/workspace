@@ -121,7 +121,8 @@ def run_full_sync():
         check=True,
     )
     subprocess.run(
-        ["bash", os.path.join(REPO_DIR, "scripts", "sync-repos.sh")], check=False
+        ["bash", os.path.join(REPO_DIR, "scripts", "sync-repos.sh"), "--non-interactive"],
+        check=False,
     )
     print("Full sync complete!")
 

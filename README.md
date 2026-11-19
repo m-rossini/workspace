@@ -22,22 +22,27 @@ repos under `/home/perez/projetos/` on the latest version.
 ```bash
 # Before starting work anywhere: bring everything to latest
 ./scripts/sync-repos.sh --check   # preview: behind / ahead / dirty per repo
-./scripts/sync-repos.sh           # pull every clean repo (ff-only, skips dirty)
+./scripts/sync-repos.sh           # interactive: asks before each pull/push
+
+# Unattended (e.g. from ai-sync): safe pulls only, pushes skipped, no prompts
+./scripts/sync-repos.sh --non-interactive
+./scripts/sync-repos.sh --yes     # answer yes to safe pulls, still ask before pushes
 
 # Single repo
 ./scripts/sync-repos.sh bns
-
-# Full hub sync (skills + MCP collect + MCP distribute + repos)
-./ai-sync --non-interactive
-./ai-sync                         # interactive menu
 ```
 
 ### Safety rules (`sync-repos.sh`)
 
 1. Never touches repos with uncommitted changes — reports and skips them.
 2. Only `git pull --ff-only` — never creates merge commits.
-3. Never switches branches — pulls whatever is checked out.
-4. Never pushes, deletes, or rewrites history.
+3. Never switches branches — acts on whatever is checked out.
+4. Pushes only on an explicit yes (default answer is No; never in
+   `--non-interactive` mode). Ahead-only repos are reported, not published.
+5. Never resets, rebases, or rewrites history. Diverged repos are reported
+   with a log command for manual resolution.
+6. No prompts when stdin is not a terminal or `--non-interactive` is given —
+   safe pulls proceed, everything else is skipped and counted.
 
 ## Sibling repos covered
 
