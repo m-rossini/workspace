@@ -23,7 +23,12 @@ description: Use for git work — branching, worktrees, commit, push, pull reque
 7. **Update main**: `git checkout <default> && git pull`.
 8. **Cleanup** (only when the user asks): `git worktree remove <path>`, `git branch -d <branch>`. Use `-D` or `--force` only after the user confirms unmerged work can be lost.
 
-"Full finish" means steps 3-7, pausing for confirmation at push and merge.
+## Full finish
+
+"Full finish" means steps 3-7 above, in order: commit the work, push the
+branch, open a PR, merge the PR, then update the local default branch.
+Pause for confirmation at push and at merge. Never skip the PR + merge on
+shared repos to "save time" — that is what full-finish forbids.
 
 ## Useful commands
 
