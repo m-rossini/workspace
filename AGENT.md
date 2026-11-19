@@ -18,7 +18,8 @@ agent config and sync tooling live here.
 - Before starting work in any sibling repo, run `./scripts/sync-repos.sh --check`
   (preview) then `./scripts/sync-repos.sh` (fetch + `pull --ff-only` on clean repos).
 - The script never touches dirty repos, never switches branches, never merges
-  non-fast-forward, never pushes. Dirty/behind repos are reported for manual handling.
+  non-fast-forward, never resets, and never pushes without an explicit yes.
+  Dirty/diverged repos are reported for manual handling.
 - `./ai-sync` (interactive) or `./ai-sync --non-interactive` runs the full hub
   sync: skills + MCP collect + MCP distribute + repos.
 

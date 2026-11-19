@@ -52,9 +52,8 @@ Discovered dynamically: every directory under `/home/perez/projetos/` with a
 `photo_pipeline`, `spotdata`, `sysdyn`, `toejam_and_earl`, plus `workspace` itself.
 Non-git folders (`balance`, `config`, `data`, `tv`, …) are skipped.
 
-Known caveat: `photo_pipeline` uses an `https://` remote and its `fetch` fails
-without terminal auth — switch it to SSH (`git@github.com:…`) or `gh auth login`
-to include it in automated syncs.
+Remotes should use SSH (`git@github.com:…`) so `fetch` works non-interactively;
+`photo_pipeline` was previously `https://` and has been switched to SSH.
 
 ## Git conventions (see `skills/git/SKILL.md`)
 
