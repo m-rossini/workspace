@@ -4,7 +4,7 @@
 #   no arg  -> sync all skills
 #   arg     -> sync only that skill
 
-REPO_SKILLS_DIR="/home/perez/projetos/ai-tools/skills"
+REPO_SKILLS_DIR="/home/perez/projetos/workspace/skills"
 if [ ! -d "$REPO_SKILLS_DIR" ]; then
   echo "Error: Repository skills directory not found at $REPO_SKILLS_DIR"
   exit 1

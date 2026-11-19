@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""ai-sync - Interactive REPL driver for skill and MCP sync operations.
+"""ai-sync - Interactive REPL driver for skill, MCP, and repo sync operations.
+
+This repo (`workspace`) is the hub for all projects under /home/perez/projetos:
+  - skills/  -> source of truth for agent skills
+  - mcp/     -> source of truth for MCP server definitions
+  - scripts/sync-repos.sh -> keeps every sibling repo on latest (fetch + ff-pull)
 
 Sub-scripts (each has a specific task):
   scripts/sync-skills.sh      [skill_name]   - Sync skill(s) to Claude, Codex, OpenCode
   scripts/sync-mcp-collect.py - Collect MCP definitions from all agent configs
   scripts/sync-mcp-distribute.py [server_name] - Distribute MCP server(s) to all agents
+  scripts/sync-repos.sh [--check] [repo] - Fetch + fast-forward all sibling repos
 """
 
 import json
@@ -12,9 +18,21 @@ import os
 import subprocess
 import sys
 
-REPO_DIR = "/home/perez/projetos/ai-tools"
+REPO_DIR = "/home/perez/projetos/workspace"
+PARENT_DIR = "/home/perez/projetos"
 SKILLS_DIR = os.path.join(REPO_DIR, "skills")
 MCP_FILE = os.path.join(REPO_DIR, "mcp", "servers.json")
+
+
+def list_repos():
+    """Sibling dirs of workspace that contain a .git repo."""
+    repos = []
+    if os.path.isdir(PARENT_DIR):
+        for name in sorted(os.listdir(PARENT_DIR)):
+            path = os.path.join(PARENT_DIR, name)
+            if os.path.isdir(os.path.join(path, ".git")):
+                repos.append((name, path))
+    return repos
 
 
 def list_skills():
@@ -22,7 +40,8 @@ def list_skills():
     if os.path.isdir(SKILLS_DIR):
         for name in sorted(os.listdir(SKILLS_DIR)):
             path = os.path.join(SKILLS_DIR, name)
-            if os.path.isdir(path) and name != "AGENT.md" and not name.startswith("."):
+            if os.path.isdir(path) and not name.startswith(".") and name not in ("synced",):
+                # skills/synced/ is a generated cache (see .gitignore), not a source skill
                 skills.append((name, path))
     return skills
 
@@ -101,6 +120,9 @@ def run_full_sync():
         [sys.executable, os.path.join(REPO_DIR, "scripts", "sync-mcp-distribute.py")],
         check=True,
     )
+    subprocess.run(
+        ["bash", os.path.join(REPO_DIR, "scripts", "sync-repos.sh")], check=False
+    )
     print("Full sync complete!")
 
 
@@ -139,6 +161,8 @@ def run_interactive():
         print("\nCommands:")
         print("  [a] Collect MCP definitions from all agents")
         print("  [d] Distribute MCP definitions to all agents")
+        print("  [s] Sync all sibling repos to latest (fetch + ff-pull)")
+        print("  [c] Check sibling repo status (fetch only, no pulls)")
         print("  [q] Quit")
 
         try:
@@ -166,6 +190,18 @@ def run_interactive():
                     os.path.join(REPO_DIR, "scripts", "sync-mcp-distribute.py"),
                 ],
                 check=True,
+            )
+        elif choice == "s":
+            print("\n[s] Syncing all sibling repos to latest...")
+            subprocess.run(
+                ["bash", os.path.join(REPO_DIR, "scripts", "sync-repos.sh")],
+                check=False,
+            )
+        elif choice == "c":
+            print("\n[c] Checking sibling repo status (no pulls)...")
+            subprocess.run(
+                ["bash", os.path.join(REPO_DIR, "scripts", "sync-repos.sh"), "--check"],
+                check=False,
             )
         else:
             try:
