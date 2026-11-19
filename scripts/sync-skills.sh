@@ -4,7 +4,7 @@
 #   no arg  -> sync all skills
 #   arg     -> sync only that skill
 
-REPO_SKILLS_DIR="/home/perez/projetos/ai-tools/skills"
+REPO_SKILLS_DIR="/home/perez/projetos/workspace/skills"
 if [ ! -d "$REPO_SKILLS_DIR" ]; then
   echo "Error: Repository skills directory not found at $REPO_SKILLS_DIR"
   exit 1
@@ -109,6 +109,10 @@ link_agent_md "$CODEX_SKILLS_DIR"
 link_agent_md "$OPENCODE_SKILLS_DIR"
 
 if [ -n "$1" ]; then
+  if [ "$1" = "synced" ]; then
+    echo "Error: 'synced' is a generated cache, not a source skill; refusing."
+    exit 1
+  fi
   skill_dir="$REPO_SKILLS_DIR/$1"
   if [ ! -d "$skill_dir" ]; then
     echo "Error: skill '$1' not found in $REPO_SKILLS_DIR"
@@ -123,6 +127,9 @@ for skill_dir in "$REPO_SKILLS_DIR"/*; do
   skill_name=$(basename "$skill_dir")
   [ "$skill_name" = "AGENT.md" ] && continue
   [[ "$skill_name" == .* ]] && continue
+  # skills/synced/ is a generated third-party cache (see .gitignore),
+  # not a source skill - never link it into agent dirs.
+  [ "$skill_name" = "synced" ] && continue
   sync_skill "$skill_dir" "$skill_name"
 done
 

@@ -19,7 +19,7 @@ import shutil
 import sys
 import time
 
-REPO_DIR = "/home/perez/projetos/ai-tools"
+REPO_DIR = "/home/perez/projetos/workspace"
 INPUT_FILE = os.path.join(REPO_DIR, "mcp", "servers.json")
 
 

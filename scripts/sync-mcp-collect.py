@@ -6,7 +6,7 @@ import os
 import re
 import sys
 
-REPO_DIR = "/home/perez/projetos/ai-tools"
+REPO_DIR = "/home/perez/projetos/workspace"
 OUTPUT_FILE = os.path.join(REPO_DIR, "mcp", "servers.json")
 
 BEARER_ENV_MAP = {
