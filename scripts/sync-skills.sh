@@ -4,7 +4,9 @@
 #   no arg  -> sync all skills
 #   arg     -> sync only that skill
 
-REPO_SKILLS_DIR="/home/perez/projetos/workspace/skills"
+# Portable paths: repo root is the parent of this script's dir.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_SKILLS_DIR="$(dirname "$SCRIPT_DIR")/skills"
 if [ ! -d "$REPO_SKILLS_DIR" ]; then
   echo "Error: Repository skills directory not found at $REPO_SKILLS_DIR"
   exit 1

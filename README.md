@@ -2,7 +2,13 @@
 
 `workspace` is the **main project**. It does not hold product code. It holds the
 shared config every other repo relies on, plus the scripts that keep all sibling
-repos under `/home/perez/projetos/` on the latest version.
+repos (every directory with a `.git` folder at the same level as this repo) on
+the latest version. No absolute local paths are used anywhere — everything
+resolves from the repo location, so the tree works wherever it is cloned.
+
+> Agents: read [AGENT.md](AGENT.md) as well as this file. It holds the hub
+> rules, the user-command → script-action map, the MCP list (MCP takes
+> precedence over skills), and the skill triggers.
 
 ## What lives here
 
@@ -46,7 +52,7 @@ repos under `/home/perez/projetos/` on the latest version.
 
 ## Sibling repos covered
 
-Discovered dynamically: every directory under `/home/perez/projetos/` with a
+Discovered dynamically: every directory at the same level as this repo with a
 `.git` folder. Current set (Nov 2026): `OneGoodArea`, `bns`, `document_repo`,
 `dotfiles`, `international_futebol_data`, `international_results`, `mroffice`,
 `photo_pipeline`, `spotdata`, `sysdyn`, `toejam_and_earl`, plus `workspace` itself.

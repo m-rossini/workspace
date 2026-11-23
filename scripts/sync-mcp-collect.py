@@ -6,7 +6,8 @@ import os
 import re
 import sys
 
-REPO_DIR = "/home/perez/projetos/workspace"
+# Portable paths: repo root is derived from this file's location.
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT_FILE = os.path.join(REPO_DIR, "mcp", "servers.json")
 
 BEARER_ENV_MAP = {
