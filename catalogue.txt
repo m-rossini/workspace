@@ -1,0 +1,19 @@
+# Minimum catalogue of hub projects, keyed by remote repo name (owner/repo).
+# sync-repos.sh verifies every entry is cloned next to this repo.
+# Local directory names may differ (e.g. document_repo -> document_repository).
+# One entry per line. Lines starting with # are comments.
+OneGoodArea/OneGoodArea
+m-rossini/bns
+m-rossini/document_repository
+m-rossini/health_fitness
+m-rossini/international_futebol_data
+m-rossini/international_results
+m-rossini/mroffice
+m-rossini/photo_pipeline
+m-rossini/spotdata
+m-rossini/sysdyn
+m-rossini/the_book
+m-rossini/funk-of-the-floating-islands
+m-rossini/video_pipeline
+m-rossini/wifi
+m-rossini/workspace

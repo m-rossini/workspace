@@ -25,6 +25,7 @@ set -u
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 PARENT_DIR="$(dirname "$REPO_DIR")"
+CATALOGUE_FILE="$REPO_DIR/catalogue.txt"
 CHECK_ONLY=0
 NONINTERACTIVE=0
 AUTOYES=0
@@ -81,6 +82,43 @@ up_to_date=0
 skipped_dirty=0
 skipped_declined=0
 failed=0
+
+# origin remote of a repo dir as owner/repo, or nothing on failure.
+remote_name() {
+  local url="$1"
+  url=${url%.git}
+  case "$url" in
+    *@github.com:*) url=${url#*:} ;;
+    *github.com/*) url=${url#*github.com/} ;;
+    *) return 1 ;;
+  esac
+  echo "$url"
+}
+
+# Verify every catalogue.txt entry (owner/repo) is cloned next to this repo.
+# Local directory names may differ from repo names; matching is by remote.
+check_catalogue() {
+  [ -f "$CATALOGUE_FILE" ] || return 0
+  local present="" entry missing=0 d rn
+  for d in "$PARENT_DIR"/*/; do
+    [ -d "$d/.git" ] || continue
+    rn=$(remote_name "$(git -C "$d" remote get-url origin 2>/dev/null)") || continue
+    present="$present
+$rn"
+  done
+  while IFS= read -r entry || [ -n "$entry" ]; do
+    entry=$(printf '%s' "$entry" | sed 's/#.*//; s/^[[:space:]]*//; s/[[:space:]]*$//')
+    [ -z "$entry" ] && continue
+    if ! printf '%s' "$present" | grep -qxF "$entry"; then
+      echo "  CATALOGUE MISSING: $entry is not cloned next to this repo"
+      missing=$((missing+1))
+    fi
+  done < "$CATALOGUE_FILE"
+  if [ "$missing" -eq 0 ]; then
+    echo "  catalogue: all entries present locally."
+  fi
+  return 0
+}
 
 sync_one() {
   local dir="$1"
@@ -189,6 +227,10 @@ else
     sync_one "$d"
   done
 fi
+
+echo ""
+echo "Catalogue check (minimum set from catalogue.txt):"
+check_catalogue
 
 if [ "$CHECK_ONLY" -eq 0 ]; then
   echo ""
