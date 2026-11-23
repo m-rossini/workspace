@@ -30,6 +30,7 @@ All scripts resolve paths from their own location; run them from this repo.
 | "sync repos" / "update repos" | `./scripts/sync-repos.sh` (asks before each pull/push) |
 | "sync repos non-interactive" | `./scripts/sync-repos.sh --non-interactive` (safe pulls only, pushes skipped) |
 | "sync repo `<name>`" | `./scripts/sync-repos.sh <name>` |
+| "scan new projects" | `./scripts/scan-new-projects.sh [--check]` (find untracked sibling dirs, ask to add; `.sync-ignore` remembers no) |
 | "full sync" | `./ai-sync --non-interactive` (skills + MCP collect + MCP distribute + repos) |
 | "sync skill(s) [`<name>`]" | `./scripts/sync-skills.sh [<name>]` |
 | "collect MCP" | `./scripts/sync-mcp-collect.py` (agent configs → `mcp/servers.json`) |
