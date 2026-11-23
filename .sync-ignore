@@ -1,0 +1,4 @@
+# Sibling directories that scan-new-projects.sh must never suggest adding.
+# One directory name per line. Lines starting with # are comments.
+# Decided local-only:
+tv

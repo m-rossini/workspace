@@ -20,6 +20,7 @@ resolves from the repo location, so the tree works wherever it is cloned.
 | `scripts/sync-mcp-collect.py` | Pulls MCP definitions from all agent configs into `mcp/servers.json`. |
 | `scripts/sync-mcp-distribute.py` | Adds missing MCP servers to all agent configs (add-only, never overwrites). |
 | `scripts/sync-mcp-remove.py <name>` | Removes an MCP server from `servers.json` + all agent configs. |
+| `scripts/scan-new-projects.sh [--check] [name]` | Finds sibling dirs that are not repos yet and asks to add them (init + commit, optional GitHub push). `.sync-ignore` lists dirs to never suggest. |
 | `scripts/sync-repos.sh` | Fetches + fast-forward-pulls every sibling git repo. This is the "always on latest" mechanism. |
 | `ai-sync` | Interactive driver (and `--non-interactive` full-sync) over all of the above. |
 
