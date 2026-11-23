@@ -1,8 +1,15 @@
 # workspace — hub instructions
 
-This repo (`/home/perez/projetos/workspace`) is the **main project / hub** for all
-repos under `/home/perez/projetos/`. Product code lives in the siblings; shared
-agent config and sync tooling live here.
+> **Read [README.md](README.md) as well as this file.** README holds the
+> workflows and the repo layout; this file holds the hub rules, the command
+> map, the MCP list, and the skill triggers. You need both.
+
+This repo (`workspace`) is the **main project / hub** for the projects
+sitting next to it — every directory with a `.git` folder at the same level
+as this repo. Product code lives in the siblings; shared agent config and
+sync tooling live here. Never use absolute local paths: derive the repo root
+from this file's location and treat siblings as "the directories next to
+this repo", so the tree works wherever it is cloned.
 
 ## Sources of truth
 
@@ -12,6 +19,41 @@ agent config and sync tooling live here.
 - Agent machines (`~/.claude/skills/`, `~/.codex/skills/`, `~/.config/opencode/…`)
   are *targets*, synced from here via `scripts/sync-skills.sh` and
   `scripts/sync-mcp-distribute.py` (add-only, never overwrites existing entries).
+
+## Command map — what the user says → what you run
+
+All scripts resolve paths from their own location; run them from this repo.
+
+| User says | You run |
+|---|---|
+| "check repos" / "repo status" | `./scripts/sync-repos.sh --check` (fetch only, no pulls) |
+| "sync repos" / "update repos" | `./scripts/sync-repos.sh` (asks before each pull/push) |
+| "sync repos non-interactive" | `./scripts/sync-repos.sh --non-interactive` (safe pulls only, pushes skipped) |
+| "sync repo `<name>`" | `./scripts/sync-repos.sh <name>` |
+| "full sync" | `./ai-sync --non-interactive` (skills + MCP collect + MCP distribute + repos) |
+| "sync skill(s) [`<name>`]" | `./scripts/sync-skills.sh [<name>]` |
+| "collect MCP" | `./scripts/sync-mcp-collect.py` (agent configs → `mcp/servers.json`) |
+| "distribute MCP [`<name>`]" | `./scripts/sync-mcp-distribute.py [<name>]` (add-only) |
+| "remove MCP `<name>`" | `./scripts/sync-mcp-remove.py <name>` (servers.json + all agent configs) |
+
+## MCP servers — use these first
+
+**MCP takes precedence over skills.** When an MCP server offers a tool for
+the task, use it instead of any skill's hand-rolled approach. Skills cover
+conduct and workflow; MCP covers live data and actions.
+
+Available servers (`mcp/servers.json` is canonical):
+
+| Server | Use for |
+|---|---|
+| `github` | Repos, issues, PRs, commits, files |
+| `atlassian` | Jira issues and comments |
+| `neon` | Postgres database |
+| `vercel` | Deployments and hosting |
+| `render` | Hosting and services |
+| `posthog` | Product analytics |
+| `futebol-api` | International football data |
+| `playwright` | Browser automation |
 
 ## Keep-everything-on-latest
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """ai-sync - Interactive REPL driver for skill, MCP, and repo sync operations.
 
-This repo (`workspace`) is the hub for all projects under /home/perez/projetos:
+This repo (`workspace`) is the hub for the projects sitting next to it
+(sibling directories at the same level as this repo):
   - skills/  -> source of truth for agent skills
   - mcp/     -> source of truth for MCP server definitions
   - scripts/sync-repos.sh -> keeps every sibling repo on latest (fetch + ff-pull)
@@ -18,8 +19,11 @@ import os
 import subprocess
 import sys
 
-REPO_DIR = "/home/perez/projetos/workspace"
-PARENT_DIR = "/home/perez/projetos"
+# Portable paths: repo root is derived from this file's location, so the
+# whole tree works wherever it is cloned. Sibling projects are the
+# directories at the same level as the repo root. No absolute paths.
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PARENT_DIR = os.path.dirname(REPO_DIR)
 SKILLS_DIR = os.path.join(REPO_DIR, "skills")
 MCP_FILE = os.path.join(REPO_DIR, "mcp", "servers.json")
 

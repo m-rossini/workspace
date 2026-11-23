@@ -1,5 +1,6 @@
 #!/bin/bash
-# sync-repos - Keep all sibling repos under /home/perez/projetos on latest
+# sync-repos - Keep all sibling repos on latest
+# (every directory with a .git folder at the same level as this repo).
 # This is what makes `workspace` the hub: run this before starting work
 # anywhere else to ensure you're on the latest version of everything.
 #
@@ -19,7 +20,11 @@
 #   6. No prompts when stdin is not a terminal or --non-interactive is given.
 
 set -u
-PARENT_DIR="/home/perez/projetos"
+# Portable paths: repo root is the parent of this script's dir,
+# sibling repos are the directories next to it. No absolute paths.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
+PARENT_DIR="$(dirname "$REPO_DIR")"
 CHECK_ONLY=0
 NONINTERACTIVE=0
 AUTOYES=0
