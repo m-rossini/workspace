@@ -22,6 +22,7 @@ resolves from the repo location, so the tree works wherever it is cloned.
 | `scripts/sync-mcp-remove.py <name>` | Removes an MCP server from `servers.json` + all agent configs. |
 | `scripts/scan-new-projects.sh [--check] [name]` | Finds sibling dirs that are not repos yet and asks to add them (init + commit, optional GitHub push). `.sync-ignore` lists dirs to never suggest. |
 | `scripts/sync-repos.sh` | Fetches + fast-forward-pulls every sibling git repo. This is the "always on latest" mechanism. |
+| `catalogue.txt` | Minimum catalogue of hub projects by remote `owner/repo`. `sync-repos.sh` warns about entries not cloned locally. |
 | `ai-sync` | Interactive driver (and `--non-interactive` full-sync) over all of the above. |
 
 ## Workflows
@@ -54,7 +55,8 @@ resolves from the repo location, so the tree works wherever it is cloned.
 ## Sibling repos covered
 
 Discovered dynamically: every directory at the same level as this repo with a
-`.git` folder. Current set (Nov 2026): `OneGoodArea`, `bns`, `document_repo`,
+`.git` folder (plus a minimum set in `catalogue.txt` — `sync-repos.sh` warns
+about catalogue entries that are not cloned locally). Current set (Nov 2026): `OneGoodArea`, `bns`, `document_repo`,
 `dotfiles`, `international_futebol_data`, `international_results`, `mroffice`,
 `photo_pipeline`, `spotdata`, `sysdyn`, `toejam_and_earl`, plus `workspace` itself.
 Non-git folders (`balance`, `config`, `data`, `tv`, …) are skipped.
