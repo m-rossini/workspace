@@ -6,7 +6,8 @@
 
 # Portable paths: repo root is the parent of this script's dir.
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_SKILLS_DIR="$(dirname "$SCRIPT_DIR")/skills"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+REPO_SKILLS_DIR="$REPO_ROOT/skills"
 if [ ! -d "$REPO_SKILLS_DIR" ]; then
   echo "Error: Repository skills directory not found at $REPO_SKILLS_DIR"
   exit 1
@@ -18,7 +19,7 @@ CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
 CODEX_SKILLS_DIR="$HOME/.codex/skills"
 OPENCODE_SKILLS_DIR="$HOME/.config/opencode/skills"
 
-AGENT_REPO="$REPO_SKILLS_DIR/AGENT.md"
+AGENT_REPO="$REPO_ROOT/AGENT.md"
 
 # Link AGENT.md into an agent's skills dir, unless that dir already resolves
 # back to the repo (in which case the repo is already mounted there).
