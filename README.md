@@ -71,3 +71,21 @@ Remotes should use SSH (`git@github.com:…`) so `fetch` works non-interactively
 - Default branch (`main`/`master`) is never edited directly.
 - Work on feature branches, commit there, open PRs with `gh`.
 - Confirm before push / PR merge / destructive steps.
+
+## Codex CLI status line
+
+The experimental custom status line reuses the shared formatter in
+`scripts/statusline.sh`. Register its local provider from the hub root
+with Codex CLI 0.172.0 or newer, Python 3.9+, Bash, Git, jq, and awk installed.
+
+```bash
+codex mcp add workspace-statusline -- python3 -u "$PWD/scripts/codex-statusline.py"
+```
+
+Add `tui_extensions_statusline = true` under `[features]` and
+`status_line_provider = { server = "workspace-statusline", tool = "statusline" }`
+under `[tui]` in your user Codex config. Restart Codex to load the provider.
+
+The footer shows the directory, Git branch and worktree, date and time, model,
+context, tokens, cache, tracked line changes against HEAD, and available cost
+and usage limits. Codex's provider snapshot has no session start timestamp.
