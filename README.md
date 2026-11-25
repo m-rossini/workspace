@@ -24,6 +24,8 @@ resolves from the repo location, so the tree works wherever it is cloned.
 | `scripts/sync-repos.sh` | Fetches + fast-forward-pulls every sibling git repo. This is the "always on latest" mechanism. |
 | `catalogue.txt` | Minimum catalogue of hub projects by remote `owner/repo`. `sync-repos.sh` warns about entries not cloned locally. |
 | `ai-sync` | Interactive driver (and `--non-interactive` full-sync) over all of the above. |
+| `scripts/statusline.sh` | Claude Code status line (dir, branch/worktree, model, date/time, tokens, cost). Linked from `~/.claude/statusline.sh`. |
+| `AGENTS.md` / `CLAUDE.md` | Agent entry points: `AGENTS.md` for Codex and OpenCode, `CLAUDE.md` (imports AGENT.md + README.md) for Claude Code. |
 
 ## Workflows
 
