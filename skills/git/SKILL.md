@@ -9,8 +9,9 @@ description: Use for git work — branching, worktrees, commit, push, pull reque
 
 1. Never edit neither commit directly to the default branch (`main`, or `master` if that is what the repo uses). Do not rename an existing default branch.
 2. Work on a new branch per task. For large or parallel work, suggest a worktree and let the user choose. Again, never change file sin main, that is BIG RED LINE. If there is any indication of Jira in the plan, prefix the branch name with the Jira key (e.g. `AR-123-short-desc`).
-3. Confirm with the user before outward-facing or destructive steps: push, opening/merging a PR, deleting branches, discarding changes. In general, never perform destructive actions without explicit confirmation: force pushes, hard resets, deleting branches, deleting files, overwriting user work.
-4. Use the `gh` CLI for PRs. If it is unavailable, use the GitHub MCP tools.
+3. Committer identity: before the first commit in a repo, check the established identity with `git log --format='%an <%ae>'` and set it repo-local (`git config --local user.name "…" user.email "…"`). Commits under any other email fail merge checks (e.g. Vercel blocks preview deploys when it cannot verify the commit author). Never rely on global config alone.
+4. Confirm with the user before outward-facing or destructive steps: push, opening/merging a PR, deleting branches, discarding changes. In general, never perform destructive actions without explicit confirmation: force pushes, hard resets, deleting branches, deleting files, overwriting user work. An amended commit that was already pushed needs `git push --force-with-lease` — confirm first, then verify the PR checks go green.
+5. Use the `gh` CLI for PRs. If it is unavailable, use the GitHub MCP tools.
 
 ## Workflow
 
