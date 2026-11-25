@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Claude Code status line — directory, git branch/worktree, model, date/time,
-# context + token usage, cost, session time, rate limits.
+# context + token usage, cache, cost, session time, rate limits.
 # Input: JSON on stdin (Claude Code statusLine contract). Output: 2 lines.
 # Every field is optional: missing data is simply omitted, never an error.
 
@@ -75,6 +75,9 @@ ctx_pct=$(j '.context_window.used_percentage')
 ctx_size=$(j '.context_window.context_window_size')
 tot_in=$(j '.context_window.total_input_tokens')
 tot_out=$(j '.context_window.total_output_tokens')
+cache_read=$(j '.context_window.current_usage.cache_read_input_tokens')
+cache_create=$(j '.context_window.current_usage.cache_creation_input_tokens')
+cur_in=$(j '.context_window.current_usage.input_tokens')
 
 ctx_seg=""
 if [ -n "$ctx_pct" ]; then
@@ -92,6 +95,17 @@ fi
 tok_seg=""
 if [ -n "$tot_in" ] || [ -n "$tot_out" ]; then
   tok_seg="${CY}↑$(fmt_num "${tot_in:-0}")${R} ${CY}↓$(fmt_num "${tot_out:-0}")${R} ${DIM}tok${R}"
+fi
+
+cache_seg=""
+if [ -n "$cache_read" ]; then
+  cache_total=$(awk -v a="${cur_in:-0}" -v b="${cache_create:-0}" -v c="${cache_read:-0}" 'BEGIN { print a+b+c }')
+  if [ -n "$cache_total" ] && awk -v t="$cache_total" 'BEGIN { exit !(t > 0) }'; then
+    cache_pct=$(awk -v c="$cache_read" -v t="$cache_total" 'BEGIN { printf "%.1f", (c/t)*100 }')
+    cache_seg="${CY}⧉ ${cache_pct}% — $(fmt_num "$cache_read")${R}"
+  else
+    cache_seg="${CY}⧉ $(fmt_num "$cache_read")${R}"
+  fi
 fi
 
 # ---- cost, session time, diff stats ----------------------------------------
@@ -133,7 +147,7 @@ join() { # join non-empty segments with the separator
 }
 
 line1=$(join "${B}${CY}${dir_disp}${R}${git_seg}" "${MA}${model}${R}" "${DIM}${now_date} ${R}${B}${now_time}${R}")
-line2=$(join "$ctx_seg" "$tok_seg" "${YE}${cost_seg}${R}" "${dur_seg:+⏱ $dur_seg}" "$lines_seg" "$rl_seg")
+line2=$(join "$ctx_seg" "$tok_seg" "$cache_seg" "${YE}${cost_seg}${R}" "${dur_seg:+⏱ $dur_seg}" "$lines_seg" "$rl_seg")
 
 printf '%s\n' "$line1"
 [ -n "$line2" ] && printf '%s\n' "$line2"
