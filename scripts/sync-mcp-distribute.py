@@ -197,10 +197,6 @@ def distribute_codex(servers):
         return True
 
     lines = content.split("\n")
-    last_mcp_idx = -1
-    for i, line in enumerate(lines):
-        if line.strip().startswith("[mcp_servers"):
-            last_mcp_idx = i
 
     block = []
     for name, config in to_add.items():
@@ -218,10 +214,11 @@ def distribute_codex(servers):
                 f'bearer_token_env_var = "{config["bearer_token_env_var"]}"'
             )
 
-    if last_mcp_idx < 0:
-        new_lines = lines + [""] + block
-    else:
-        new_lines = lines[: last_mcp_idx + 1] + block + lines[last_mcp_idx + 1:]
+    # Append at end of file. Never splice after a table header: that would
+    # orphan the existing block's keys under the new header and corrupt the
+    # TOML (empty [mcp_servers.x] table + keys attached to the wrong server).
+    sep = [] if lines and not lines[-1].strip() else [""]
+    new_lines = lines + sep + block
 
     backup(path)
     with open(path, "w") as f:
