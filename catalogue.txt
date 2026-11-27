@@ -9,6 +9,7 @@ m-rossini/health_fitness
 m-rossini/international_futebol_data
 m-rossini/international_results
 m-rossini/mroffice
+m-rossini/oracle-oci
 m-rossini/photo_pipeline
 m-rossini/spotdata
 m-rossini/sysdyn
