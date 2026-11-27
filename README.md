@@ -61,6 +61,8 @@ Discovered dynamically: every directory at the same level as this repo with a
 about catalogue entries that are not cloned locally). Current set (Nov 2026): `OneGoodArea`, `bns`, `document_repo`,
 `dotfiles`, `international_futebol_data`, `international_results`, `mroffice`,
 `photo_pipeline`, `spotdata`, `sysdyn`, `toejam_and_earl`, plus `workspace` itself.
+Tracked in `catalogue.txt` (minimum set, warned if not cloned): `health_fitness`,
+`the_book`, `video_pipeline`, `wifi`, `funk-of-the-floating-islands`, `genealogy`, `oracle-oci`.
 Non-git folders (`balance`, `config`, `data`, `tv`, …) are skipped.
 
 Remotes should use SSH (`git@github.com:…`) so `fetch` works non-interactively;
